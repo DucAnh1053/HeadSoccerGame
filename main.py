@@ -1,4 +1,5 @@
 import pygame
+import pygame_gui
 from pygame import mixer
 import sys
 import pymunk
@@ -40,6 +41,66 @@ def draw(player1, player2, goal, ball, sc):
     sc.update()
     sc.draw(SCREEN)
     pygame.display.update()
+
+
+def get_user_name(player):
+    manager = pygame_gui.UIManager((WIDTH, HEIGHT))
+    text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((190, 275), (900, 50)), manager=manager,
+                                                     object_id='#main_text_entry')
+    font = get_font("Assets/font2.ttf", 50)
+    title = font.render(f"Enter {player} name", True, "white")
+    title_rect = title.get_rect(center=(WIDTH/2, 50))
+    while True:
+        UI_REFRESH_RATE = CLOCK.tick(60)/1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if (event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and
+                    event.ui_object_id == '#main_text_entry'):
+                return event.text
+
+            manager.process_events(event)
+
+        manager.update(UI_REFRESH_RATE)
+
+        SCREEN.blit(BG, (0, 0))
+        SCREEN.blit(title, title_rect)
+
+        manager.draw_ui(SCREEN)
+
+        pygame.display.update()
+
+
+def pause_game():
+    RESUME_BUTTON = Button(image=pygame.image.load("Assets/Image/rect.png"), pos=(WIDTH/2, 2*HEIGHT/5),
+                           text_input="RESUME", font=get_font("Assets/font.ttf", 75), base_color="#d7fcd4", hovering_color="White")
+    HOME = Button(image=pygame.image.load("Assets/Image/rect.png"), pos=(WIDTH/2, 4*HEIGHT/5),
+                  text_input="HOME", font=get_font("Assets/font.ttf", 75), base_color="#d7fcd4", hovering_color="White")
+
+    while True:
+        SCREEN.blit(BG, (0, 0))
+
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+        for button in [RESUME_BUTTON, HOME]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if RESUME_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    return False
+                if HOME.checkForInput(MENU_MOUSE_POS):
+                    return True
+
+        pygame.display.update()
 
 
 def player_selection(text):
@@ -94,6 +155,8 @@ def play():
         mixer.music.set_volume(0.2)
         mixer.music.play(loops=-1)
     field_bg = pygame.image.load("Assets/Image/Bg.jpg").convert_alpha()
+    player1_name = get_user_name("player 1")
+    player2_name = get_user_name("player 2")
     head_path1 = player_selection("Chọn nhân vật cho Player1")
     shoe_path1 = "Assets/Image/shoe1.png"
     head_path2 = player_selection("Chọn nhân vật cho Player2")
@@ -107,6 +170,8 @@ def play():
     ground = Ground(space)
     goal = Goal(space)
     sc = ScoreBoard(get_font("Assets/font2.ttf", 35))
+    sc.player1_name = player1_name
+    sc.player2_name = player2_name
     SCREEN.blit(field_bg, (0, 0))
     draw(player1, player2, goal, ball, sc)
     G_START.play()
@@ -120,6 +185,11 @@ def play():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    sc.pause()
+                    if pause_game():
+                        return
+                    sc.start()
                 if event.key == pygame.K_a:
                     player1.moving = True
                     player1.face_right = False

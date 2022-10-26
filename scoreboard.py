@@ -23,7 +23,6 @@ class ScoreBoard():
         self.counter = self.total_time
         self.isPause = True
         self.font = font
-        self.time_color = "green"
 
     def start(self):
         if self.isPause:
@@ -36,11 +35,8 @@ class ScoreBoard():
         if not self.isPause:
             deltaT = datetime.now() - self.start_time
             deltaT = deltaT.total_seconds()
-            if deltaT < self.total_time - 10:
-                self.counter = int(self.total_time - deltaT)
-            elif deltaT > self.total_time - 10 and deltaT <= self.total_time:
-                self.time_color = "red"
-                self.counter = round(self.total_time - deltaT, 2)
+            if deltaT <= self.total_time:
+                self.counter = self.total_time - deltaT
             else:
                 self.counter = 0
 
@@ -54,11 +50,16 @@ class ScoreBoard():
     def draw(self, screen):
         screen.blit(self.image, (self.pos_x - self.width /
                     2, self.pos_y - self.height/2))
-        counter = self.font.render(str(self.counter), True, self.time_color)
-        player1_name = self.font.render(str(self.player1_name), True, "yellow")
+        time_left = round(self.counter)
+        time_color = "green"
+        if self.counter <= 10:
+            time_left = round(self.counter, 2)
+            time_color = "red"
+        counter = self.font.render(str(time_left), True, time_color)
+        player1_name = self.font.render(str(self.player1_name), True, "black")
         player1_score = self.font.render(
             str(self.player1_score), True, "white")
-        player2_name = self.font.render(str(self.player2_name), True, "yellow")
+        player2_name = self.font.render(str(self.player2_name), True, "black")
         player2_score = self.font.render(
             str(self.player2_score), True, "white")
         screen.blit(counter, counter.get_rect(center=(WIDTH/2, 130)))
