@@ -129,6 +129,7 @@ class Player(pygame.sprite.Sprite):
         self.shoe_x = self.head_x
         self.shoe_y = self.default_pos[1] - 22 + self.s_height/2
         self.h_body.position = (self.head_x, self.head_y)
+        self.face_right = self.default_dicr
         if self.default_dicr:
             self.head = self.head_r
             self.shoe = self.shoe_r
