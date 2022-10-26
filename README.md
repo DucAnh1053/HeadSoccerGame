@@ -16,5 +16,5 @@ python main.py
 
 ## Control
 
-Player1: Press A, D to move left, right, W to jump, C to shoot
+Player1: Press A, D to move left, right, W to jump, C to shoot  
 Player2: Press ⇦, ⇨ to move left, right, ⇧ to jump, M to shoot
