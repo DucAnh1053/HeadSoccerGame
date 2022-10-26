@@ -69,18 +69,20 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         if self.moving:
             if self.face_right:
-                self.head_x += self.velo_x
-                self.shoe_x = self.head_x
-                self.h_body.position = (self.head_x, self.head_y)
-                # self.s_body.position = (self.shoe_x, self.shoe_y)
-                self.head = self.head_r
-                self.shoe = self.shoe_r
+                if self.head_x <= 1136:
+                    self.head_x += self.velo_x
+                    self.shoe_x = self.head_x
+                    self.h_body.position = (self.head_x, self.head_y)
+                    # self.s_body.position = (self.shoe_x, self.shoe_y)
+                    self.head = self.head_r
+                    self.shoe = self.shoe_r
             else:
-                self.head_x -= self.velo_x
-                self.shoe_x = self.head_x
-                self.h_body.position = (self.head_x, self.head_y)
-                self.head = self.head_l
-                self.shoe = self.shoe_l
+                if self.head_x >= 144:
+                    self.head_x -= self.velo_x
+                    self.shoe_x = self.head_x
+                    self.h_body.position = (self.head_x, self.head_y)
+                    self.head = self.head_l
+                    self.shoe = self.shoe_l
 
         if self.jumping:
             self.head_y -= self.velo_y * 4

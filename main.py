@@ -170,8 +170,10 @@ def play():
     ground = Ground(space)
     goal = Goal(space)
     sc = ScoreBoard(get_font("Assets/font2.ttf", 35))
-    sc.player1_name = player1_name
-    sc.player2_name = player2_name
+    if player1_name != "":
+        sc.player1_name = player1_name
+    if player2_name != "":
+        sc.player2_name = player2_name
     SCREEN.blit(field_bg, (0, 0))
     draw(player1, player2, goal, ball, sc)
     G_START.play()
