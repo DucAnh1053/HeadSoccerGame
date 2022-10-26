@@ -295,11 +295,11 @@ def end(sc):
     result = None
     font = get_font("Assets/font2.ttf", 100)
     if sc.player1_score > sc.player2_score:
-        result = font.render(f"{sc.player1_name} chiến thắng", True, "white")
+        result = font.render(f"{sc.player1_name} is the winner", True, "white")
     elif sc.player1_score < sc.player2_score:
-        result = font.render(f"{sc.player2_name} chiến thắng", True, "white")
+        result = font.render(f"{sc.player2_name} is the winner", True, "white")
     else:
-        result = font.render(f"Tỉ số hoà", True, "white")
+        result = font.render(f"DRAW", True, "white")
     result_rect = result.get_rect(center=(WIDTH/2, 2*HEIGHT/5))
     score = font.render(
         f"{sc.player1_score} - {sc.player2_score}", True, "white")
