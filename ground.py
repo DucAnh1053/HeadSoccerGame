@@ -1,5 +1,7 @@
-import pymunk, pymunk.pygame_util
+import pymunk
+import pymunk.pygame_util
 from settings import WIDTH, HEIGHT
+
 
 class Ground():
     def __init__(self, space):

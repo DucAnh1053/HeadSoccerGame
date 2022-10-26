@@ -1,6 +1,10 @@
-import pygame, pymunk, pymunk.pygame_util, math
+import pygame
+import pymunk
+import pymunk.pygame_util
+import math
 import random
 from settings import WIDTH, HEIGHT
+
 
 class Ball():
     def __init__(self, space):
@@ -8,8 +12,9 @@ class Ball():
         self.body = None
         self.shape = None
         self.newBall(space)
-        self.pos = WIDTH/2 - self.image.get_width()/2, HEIGHT/2 - 150 - self.image.get_height()/2
-        
+        self.pos = WIDTH/2 - self.image.get_width()/2, HEIGHT/2 - 150 - \
+            self.image.get_height()/2
+
     def draw(self, screen):
         if self.body != None:
             pos_x, pos_y = self.body._get_position()
@@ -21,12 +26,12 @@ class Ball():
             rot_image = rot_image.subsurface(rot_rect).copy()
             self.pos = pos_x - rot_image.get_width()/2, pos_y - rot_image.get_height()/2
             screen.blit(rot_image, self.pos)
-        
+
     def removeBall(self, space):
         space.remove(self.body, self.shape)
         self.body = None
         self.shape = None
-        
+
     def newBall(self, space):
         body = pymunk.Body(body_type=pymunk.Body.DYNAMIC)
         body.position = (WIDTH/2, HEIGHT/2 - 150)
@@ -37,15 +42,15 @@ class Ball():
         space.add(body, shape)
         self.body = body
         self.shape = shape
-        random_num = random.randint(0,1)
+        random_num = random.randint(0, 1)
         if random_num == 0:
             self.body.apply_impulse_at_local_point((-100, 0))
         else:
             self.body.apply_impulse_at_local_point((100, 0))
-    
+
     def isGoal(self):
         pos_x, pos_y = self.body._get_position()
         if pos_x <= 40 and pos_y >= 330:
-            return 1 #Left
+            return 1  # Left
         if pos_x >= 1240 and pos_y >= 330:
-            return -1 #Right
+            return -1  # Right

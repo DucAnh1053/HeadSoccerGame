@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
         self.h_shape.friction = 0.65
         space.add(self.h_body, self.h_shape)
         self.alreadyCollision = False
-        
+
         # s_moment = pymunk.moment_for_circle(10, 0, 8)
         # self.s_body = pymunk.Body(
         #     50, s_moment, body_type=pymunk.Body.KINEMATIC)
@@ -122,7 +122,7 @@ class Player(pygame.sprite.Sprite):
         self.rot_shoe = pygame.transform.rotate(self.shoe, self.shoe_angle)
         screen.blit(self.rot_shoe, (self.shoe_x - self.rot_shoe.get_width() /
                     2 + self.shoe_angle/2, self.shoe_y - self.rot_shoe.get_height()/2))
-        
+
     def setDefaultPos(self):
         self.head_x = self.default_pos[0] + self.h_width/2
         self.head_y = self.default_pos[1] - 102 + self.h_height/2
